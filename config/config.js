@@ -1,9 +1,13 @@
 require("dotenv").config();
 
 const development = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE,
   host: process.env.DB_HOST,
   dialect: "postgres",
+};
+
+module.exports = {
+  development,
 };
