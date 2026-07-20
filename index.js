@@ -25,7 +25,7 @@ app.post('/komik', async (req, res) => {
     const data = req.body;
     try {
         const komik = await db.Komik.create(data);
-        res.status(201).json(komik);
+        res.send(komik);
     } catch (err) {
         res.send(err);
     }
@@ -34,7 +34,7 @@ app.post('/komik', async (req, res) => {
 app.get('/komik', async (req, res) => {
     try {
         const komik = await db.Komik.findAll();
-        res.status(200).json(komik);
+        res.send(komik);
     } catch (err) {
         res.send(err);
     }
@@ -47,11 +47,26 @@ app.put('/komik/:id', async (req, res) => {
     try {
         const komik = await db.Komik.findByPk(id);
         if (!komik) {
-            return res.status(404).json({ message: 'Komik not found' });
+            return res.status(404).send({ message: 'Komik tidak ditemukan' });
         }
 
         await komik.update(data);
         res.send({ message: 'Komik berhasil diupdate', komik });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.delete('/komik/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const komik = await db.Komik.findByPk(id);
+        if (!komik) {
+            return res.status(404).send({ message: 'Komik tidak ditemukan' });
+        }
+
+        await komik.destroy();
+        res.send({ message: 'Komik berhasil dihapus' });
     } catch (err) {
         res.status(500).send(err);
     }
